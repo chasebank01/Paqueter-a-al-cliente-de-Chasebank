@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parcel Tracking - Chase Bank</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <!-- Leaflet.js for OpenStreetMap -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e3f2fd;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #0a3d62;
+            padding: 10px 20px;
+            color: white;
+        }
+
+        .customer-support {
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .customer-support:hover {
+            transform: scale(1.1);
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-style: italic;
+            font-weight: bold;
+            color: #0a3d62;
+            text-shadow: 0 0 10px rgba(10, 61, 98, 0.8);
+            animation: zoomGlow 2s infinite alternate;
+            margin-top: 20px;
+        }
+
+        @keyframes zoomGlow {
+            0% { transform: scale(1); text-shadow: 0 0 10px rgba(10, 61, 98, 0.8); }
+            100% { transform: scale(1.05); text-shadow: 0 0 20px rgba(10, 61, 98, 1); }
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .info {
+            margin-bottom: 15px;
+        }
+
+        .tracking-code {
+            font-size: 18px;
+            font-weight: bold;
+            color: #d35400;
+            padding: 10px;
+            background: #f4f4f4;
+            display: inline-block;
+            border-radius: 4px;
+        }
+
+        .fee-box {
+            background: #ffeb3b;
+            padding: 10px;
+            font-weight: bold;
+            color: #d32f2f;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 18px;
+            margin-top: 15px;
+        }
+
+        .progress-container {
+            width: 100%;
+            background: #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 15px;
+            width: 10%;
+            background: #4caf50;
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 300px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #0a3d62;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div id="google_translate_element"></div>
+        <div class="customer-support">
+            <span class="material-icons">support_agent</span> 
+            <a href="https://chasebank-support.com" style="color:white;">Customer Support</a>
+        </div>
+    </header>
+
+    <h1 class="page-title">Chase Bank Parcel Tracking</h1>
+
+    <div class="container">
+        <h2>Parcel Information</h2>
+        <div class="info"><strong>Sender:</strong> Hannah Garden</div>
+        <div class="info"><strong>Receiver:</strong> Neber Martines</div>
+        <div class="info"><strong>Parcel Type:</strong> Money Package - $300,000</div>
+        <div class="info"><strong>Transport Type:</strong> Airplane ✈️</div>
+        <div class="info"><strong>From:</strong> USA 🇺🇸</div>
+        <div class="info"><strong>To:</strong> Columbia 🇨🇴</div>
+        <div class="info"><strong>Delivery Type:</strong> Home Address</div>
+        <div class="info"><strong>Tracking Code:</strong> <span class="tracking-code" id="tracking-code"></span></div>
+
+        <div class="fee-box">Delivery Fee: $300 (Pay Before Delivery)</div>
+
+        <h3>Delivery Progress</h3>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <h3>Current Location</h3>
+        <div id="map" class="map-container"></div>
+
+        <h3>Terms and Conditions Apply</h3>
+        <p>The recipient must pay the required delivery fee before receiving the parcel.</p>
+    </div>
+
+    <footer>
+        Chase Bank Parcels Delivery Department | © 2025 Chase Bank. All Rights Reserved.
+    </footer>
+
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+        }
+
+        function generateTrackingCode() {
+            document.getElementById("tracking-code").textContent = "CHASE-" + Math.floor(Math.random() * 1000000);
+        }
+
+        function updateProgress() {
+            document.getElementById("progress-bar").style.width = "80%";
+        }
+
+        function initMap() {
+            const map = L.map('map').setView([4.711, -74.072], 10); // Bogota, Colombia
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            L.marker([4.711, -74.072]).addTo(map)
+                .bindPopup('Current Location: Bogota, Colombia')
+                .openPopup();
+        }
+
+        generateTrackingCode();
+        setTimeout(updateProgress, 3000);
+        initMap();
+    </script>
+
+    <!-- Google Translate API -->
+    <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
+</html>
